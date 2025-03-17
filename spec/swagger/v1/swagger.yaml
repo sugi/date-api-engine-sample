@@ -1,0 +1,86 @@
+swagger: '2.0'
+info:
+  title: Date API Engine
+  version: '0.1.0'
+  description: A mountable Rails engine that provides a RESTful API for date information
+host: example.com
+basePath: /
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /api/v1/date:
+    get:
+      summary: Get current date
+      description: Returns the current date formatted according to parameters
+      operationId: getDate
+      tags:
+        - Date
+      parameters:
+        - name: format
+          in: query
+          description: Format of the date string
+          required: false
+          type: string
+          enum:
+            - iso8601
+            - rfc3339
+            - rfc2822
+            - long
+            - short
+            - db
+        - name: timezone
+          in: query
+          description: Timezone for the date
+          required: false
+          type: string
+          example: UTC
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              date:
+                type: string
+                example: '2023-03-16T12:34:56Z'
+              format:
+                type: string
+                example: 'iso8601'
+              timezone:
+                type: string
+                example: 'UTC'
+        '400':
+          description: Invalid request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'Invalid format: xyz'
+        '500':
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: 'An unexpected error occurred'
+
+definitions:
+  DateResponse:
+    type: object
+    properties:
+      date:
+        type: string
+        example: '2023-03-16T12:34:56Z'
+      format:
+        type: string
+        example: 'iso8601'
+      timezone:
+        type: string
+        example: 'UTC'
